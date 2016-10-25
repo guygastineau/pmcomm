@@ -1,0 +1,40 @@
+#ifndef PROGRAMFORMAT_H
+#define PROGRAMFORMAT_H
+
+#include "pmdefs.h"
+struct PMConnection;
+
+#include <stdint.h>
+
+enum PMProgramFormat {
+	PM_PROGFORMAT_SWITCHDISP,
+	PM_PROGFORMAT_LABELS,
+	PM_PROGFORMAT_SHUNTTYPE,
+	PM_PROGFORMAT_VERSION,
+	PM_PROGFORMAT_CAPACITY,
+	PM_PROGFORMAT_FILTERTIME,
+	PM_PROGFORMAT_ALARMLEVEL,
+	PM_PROGFORMAT_LOSETPOINT,
+	PM_PROGFORMAT_HISETPOINT,
+	PM_PROGFORMAT_RELAYSETPOINT,
+	PM_PROGFORMAT_CHARGEDCRITERIA,
+	PM_PROGFORMAT_EFFICIENCY,
+	PM_PROGFORMAT_CHARGETIME,
+	PM_PROGFORMAT_TIMEMINUTES,
+	PM_PROGFORMAT_STARTTIME,
+	PM_PROGFORMAT_MEASPERDAY,
+	PM_PROGFORMAT_LOGGEDITEMS,
+	PM_PROGFORMAT_FIVEPERCENT,
+
+	PM_PROGFORMAT_TCP,
+	PM_PROGFORMAT_TCP2,
+	PM_PROGFORMAT_TCPSTRING,
+	
+	PM_PROGFORMAT_INVALID
+};
+
+int PMFormatProgramData(unsigned char *data, unsigned char *data2, union PMProgramData *result, enum PMProgramFormat format);
+int PMEncodeProgramData(unsigned char *data, unsigned char *data2, union PMProgramData *input, enum PMProgramFormat format);
+enum PMProgramFormat PMProgramDataFormat(struct PMConnection *conn, int addr);
+
+#endif

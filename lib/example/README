@@ -1,0 +1,34 @@
+Please report bugs to john@bogartengineering.com
+(and cc bogart@bogartengineering.com as well)
+
+
+LICENSE:
+This program is licensed under a BSD-style license, with additional restrictions
+on naming. See the LICENSE.txt file in the top-level pmcomm-src directory for details.
+
+OVERVIEW:
+This is a simple example program which should demonstrate how to use libpmcomm to read
+display data, program data, and logged data from the PentaMetric.
+
+Writing program data is not shown, but is similar to reading.
+
+
+REQUIREMENTS:
+First, make sure libpmcomm is compiled (in the parent directory)
+
+This demo is known to work on Mac OS 10.8, Ubuntu 12.04, and Windows 8 using the MinGW compiler,
+and probably works on other similar platforms.
+
+
+COMPILING:
+First, open up main.cpp and uncomment and adjust the appropriate calls at the top of main()
+to open either a serial port or TCP/IP connection to to the PentaMetric.
+
+Also, uncomment the demo you want to run.
+
+Run "make" in this directory.  This should generate an executable called example (or example.exe
+on Windows).
+
+On Windows, it is necessary to copy libpmcomm.dll from the libpmcomm directory into the
+examples directory.  It should just work on other platforms, unless the executable is moved.
+Then, just run this executable and it should print out some live data from the PentaMetric.

@@ -1,0 +1,164 @@
+Please report bugs to john@bogartengineering.com
+(and cc bogart@bogartengineering.com as well)
+
+
+LICENSE
+This program is licensed under a BSD-style license, with additional restrictions
+on naming. See the LICENSE.txt file for details.
+
+
+QUICK START
+This package contains the source code for PMComm and libpmcomm. For Windows and
+Mac we provide pre-built binary packages, and we suggest you use those instead.
+Below are instructions for compiling from source.
+
+Linux support is EXPERIMENTAL, and you will need to compile it yourself.
+We provide specific instructions for Ubuntu. Something similar will
+probably work for other distributions, but you are on your own.
+
+
+TO INSTALL ON UBUNTU 10.04-13.04:
+Run the following commands, one on each line, assuming you are currently
+in the directory that contains this file (you may need to provide your
+password for the sudo commands):
+
+	sudo apt-get install build-essential cmake libqt4-dev libqt4-sql-sqlite
+	cd libpmcomm
+	cmake . && make && sudo make install
+	sudo ldconfig
+	cd ../pmcommm
+	qmake && make && sudo make install
+
+This will install the following files:
+/usr/local/bin/PMComm
+/usr/local/lib/libpmcomm.so
+
+To remove PMComm, you only need to delete these two files.
+
+If you wish to use the serial or USB interface (not needed for Ethernet),
+you will need to grant your user permission to access the port.
+The easiest way to do this is to add yourself to the dialout group
+by running:
+
+	sudo usermod -aG dialout $USER
+
+After running this command YOU WILL NEED TO LOG OUT AND BACK IN
+for it to take effect.
+You can then open PMComm by opening a terminal and running:
+
+	PMComm
+
+
+Instructions for other systems follow.
+
+COMPILING (OTHER LINUX):
+You will need the following:
+* Qt4 (>=4.6) or Qt5, sqlite3, and the Qt driver for sqlite3
+* A C and C++ compiler, gcc 4.4.3 and gcc 4.7.3 are known to work, but others probably will too
+* CMake
+
+First you need to install the libpmcomm library. Go into the libpmcomm directory,
+and build using cmake:
+	
+	cmake .
+
+If you want to install to a prefix other than /usr/local/, e.g. /opt/local/, instead run
+
+	cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/local .
+
+Then make and install:
+
+	make && sudo make install
+
+Finally, run ldconfig to update the library paths:
+
+	sudo ldconfig
+
+Note that this only installs the libpmcomm.so dynamic library, not its header files.
+If you want to write your own application using the library you will need to
+modify your include path to point to the libpmcomm/include directory.
+
+Next, go into the pmcomm directory, and run qmake:
+
+	qmake
+
+If you want to install to a prefix other than /usr/local/, e.g. /opt/local/, run
+
+	PREFIX=/opt/local qmake
+
+Then make and install:
+
+	make && sudo make install
+
+That's it!. You can now run PMComm from the terminal:
+
+	PMComm
+
+Feel free to delete this directory if you wish.
+Note that by default you cannot access serial ports (USB devices behaving as a virtual
+serial port) as a non-root user. The best way to change the permissions on the
+port to allow this access is dependent on the distribution.
+
+
+COMPILING (MAC)
+First, make sure you have the XCode Command Line Tools installed. Then, install CMake
+and Qt 4.8 or Qt5, either from the official downloads or through a package manager like
+MacPorts. If you install with MacPorts, the sqlite3 driver for Qt is a separate package
+that you will need to install as well. For MacPorts, the packages you need are cmake,
+qt4-mac, and qt4-mac-sqlite3-plugin, but note that the script to package the resulting
+application to run on other computers does not currently work with Qt 4.8 from MacPorts.
+Please use the official Qt 5.1.1 (or newer) installer if you want to do this.
+
+Before compiling, make sure that the Qt bin directory is in your path. This will happen
+automatically if you install with MacPorts, but you will need to do this manually if you
+install Qt from the official download package. For example, with Qt 5.1.1 in the default
+installation location, run (in the terminal window in which you will be compiling):
+
+	PATH=/Users/$USER/Qt5.1.1/5.1.1/clang_64/bin:$PATH
+
+First you need to build the libpmcomm library. Go into the libpmcomm directory,
+and build using cmake:
+	
+	cmake . && make
+
+Then, go into the main pmcomm directory, and run
+
+	qmake && make
+
+PMComm should now be built. You can run it by running:
+
+	PMComm.app/Contents/MacOS/PMComm
+
+But this isn't particularly convenient. To make a .dmg package that can be moved around,
+there is a shell script called mac-package in the pmcomm directory. It only works with
+Qt 5.1.1 or newer (it doesn't work on Qt5 older than 5.1.1 due to a bug in Qt, and also
+has problems on Qt4). Run it with:
+
+	sh mac-package.sh
+
+You should now have a .dmg bundle.
+
+
+COMPILING (WINDOWS)
+First, make sure you have the MinGW version of Qt5 installed (the Windows Qt4 packages
+have a very old version of MinGW, are not tested, and probably don't work). You also
+need to install CMake.
+
+Once Qt is installed, open the Qt MingGW shell.
+First you need to build the libpmcomm library. Go into the libpmcomm directory,
+and build using cmake:
+	
+	cmake -G "MinGW Makefiles" . && mingw32-make
+
+Then, go into the main pmcomm directory, and run
+
+	qmake && mingw32-make
+
+PMComm should now be built. To run it, copy the libpmcomm.dll file into the same
+directory as the PMComm.exe file (which will be initially placed in the release
+subdirectory).
+
+
+LIBPMCOMM:
+Build instructions are above.
+For information about using libpmcomm, see the README in the libpmcomm directory

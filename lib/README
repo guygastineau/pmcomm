@@ -1,0 +1,56 @@
+Please report bugs to john@bogartengineering.com
+(and cc bogart@bogartengineering.com as well)
+
+
+LICENSE
+This program is licensed under a BSD-style license, with additional restrictions
+on naming. See the LICENSE.txt file in the parent directory for details.
+
+
+OVERVIEW:
+This is a simple library that is used to communicate with a PentaMetric battery monitor.
+It is written in C, and provides functions for essentially all possible interactions
+with the PentaMetric.
+
+
+REQUIREMENTS:
+The library is known to work on Mac OS 10.8, Ubuntu 12.04, and Windows 8 using the MinGW compiler,
+and probably works on other similar platforms.
+
+It should be possible to get it to work with the Microsoft Visual Studio C/C++ compilers,
+but I know it doesn't work yet, since Visual Studio does not support the C99 standard.
+Fixing the code to work with the Microsoft compiler is on my to-do list.
+
+For information about installing MinGW on Windows, see http://www.mingw.org/wiki/Getting_Started
+For other platforms, the default development tools (gcc on Linux, or Apple's developer tools on Mac)
+should work fine.
+
+CMake is also required on all platforms.  You can download it from
+http://www.cmake.org/cmake/resources/software.html
+
+Cmake is also available in the default Ubuntu repositories, in Macports, and in other package
+managers as well.
+
+
+COMPILING:
+See the README in the parent directory
+
+
+USING THE API:
+Probably the best way to get started is to look at main.cpp in the example directory.
+
+Brief documentation of the functions made available by the library are in the file
+include/libpmcomm.h, and the declarations of the constants and data types (with comments)
+are in the file include/pmdefs.h.
+
+
+The PMComm library (libpmcomm) can be used to access
+data in a PentaMetric unit using the TCP/IP (Ethernet), RS232 (Serial), or USB
+versions of the PentaMetric computer interface.  On windows, the USB version requires the
+USB driver included with the PMComm windows installer. It should "just work" on other
+platforms.
+
+
+EXAMPLES:
+Please see the example/ directory (especially the README) for an example in C++ of accessing
+various types of data.
