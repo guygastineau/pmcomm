@@ -52,12 +52,17 @@ struct PMConnection {
 #define SERIALTIMEOUT 4 // sec
 #define INETTIMEOUT 10 // sec
 
+// sendBytes and receiveBytes are just little C wrappers.
+// They allow for transparent usage of serial or IP/TCP
+
 int sendBytes(struct PMConnection *conn, int len, void *buf) {
   while(len > 0) {
     int bytes = 0;
+
     // GG: I guess this is serial instead of ip/tcp
     if(!conn->inet) {
 #ifdef _WIN32
+
       // GG: Is this still true for Windows?
       DWORD serBytes;
       // For windows, serial ports need special handling
@@ -66,9 +71,11 @@ int sendBytes(struct PMConnection *conn, int len, void *buf) {
       }
       bytes = serBytes;
 #else
+      // GG: We can just `write` directly to the `fd` in Linux and Mac?
       bytes = write(conn->fd, buf, len);
 #endif
     } else {
+      // This is now over IP/TCP
 #ifdef __linux__
       // Avoid SIGPIPE
       bytes = send(conn->fd, buf, len, MSG_NOSIGNAL);
@@ -214,7 +221,23 @@ PMCOMM_API struct PMConnection * PM_CALLCONV PMOpenConnectionSerial(const char *
   return res;
 }
 
-
+// This one is weird.
+//
+// 1. Read 9 bytes from the connection (the "challenge").
+// 2. Get the version of the connection (whether it is inet or serial)
+//    from the first byte of the "challenge".
+// 3. Make sure the last 8 bytes of challenge equal:
+//    0x52 1a dd 8c 26 97 c7 80
+// 4. Send the following 8 bytes through the connection:
+//    0xee 28 da 94 8b 0f 87 3a
+// 5. Read one byte, "correct".  `0` is success and anything else is failure.
+//
+// Things I can't tell yet:
+//
+// 1. Does this initialize communication with the PM device, and
+//    give it a command to ask for the password?
+// 2. Where is the other code that deals with passwords?
+// 3. Continue...
 static int PMRespondPassword(struct PMConnection *conn) {
   unsigned char challenge[9];
   int error = receiveBytes(conn, 9, challenge);
